@@ -287,6 +287,20 @@ def command_slack_reply(buffer: str, args: List[str], options: Options):
         run_async(slack_buffer.post_message(split_args[1], thread_ts, broadcast))
 
 
+@weechat_command()
+def command_slack_away(buffer: str, args: List[str], options: Options):
+    slack_buffer = shared.buffers.get(buffer)
+    if slack_buffer:
+        run_async(slack_buffer.workspace.api.set_away("away"))
+
+
+@weechat_command()
+def command_slack_back(buffer: str, args: List[str], options: Options):
+    slack_buffer = shared.buffers.get(buffer)
+    if slack_buffer:
+        run_async(slack_buffer.workspace.api.set_away("active"))
+
+
 def print_uncaught_error(error: UncaughtError, detailed: bool, options: Options):
     weechat.prnt("", f"  {error.id} ({error.time}): {error.exception}")
     if detailed:

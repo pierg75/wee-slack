@@ -412,3 +412,12 @@ class SlackApi(SlackApiCommon):
         if response["ok"] is False:
             raise SlackApiError(self.workspace, method, response, params)
         return response
+
+    async def set_away(self, presence: str):
+        method = "presence.set"
+        params: Params = {"presence": presence}
+        response: SlackGenericResponse = await self._fetch(method, params)
+        if response["ok"] is False:
+            raise SlackApiError(self.workspace, method, response, params)
+        return response
+
