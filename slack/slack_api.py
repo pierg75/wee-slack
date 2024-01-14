@@ -246,7 +246,7 @@ class SlackApi(SlackApiCommon):
             raise SlackApiError(self.workspace, method, response, params)
         return response
 
-    async def _set_user_info(self, profile: dict):
+    async def _set_user_profile(self, profile: dict):
         method = "users.profile.set"
         if len(profile) <= 50 and all(True for k in profile if len(k) <= 255):
             params: Params = {"profile": profile}
@@ -256,10 +256,10 @@ class SlackApi(SlackApiCommon):
         return response
 
     async def set_user_status(self, status: str):
-        return await self._set_user_info({"status_text": status})
+        return await self._set_user_profile({"status_text": status})
 
     async def clear_user_status(self):
-        return await self._set_user_info({"status_text": "", "status_emoji": ""})
+        return await self._set_user_profile({"status_emoji": "", "status_text": ""})
 
     async def _fetch_users_info_without_splitting(self, user_ids: Iterable[str]):
         method = "users.info"
@@ -439,4 +439,3 @@ class SlackApi(SlackApiCommon):
         if response["ok"] is False:
             raise SlackApiError(self.workspace, method, response, params)
         return response
-
